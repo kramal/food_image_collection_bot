@@ -17,9 +17,10 @@ from datetime import date
 
 # mysql database connection
 MYSQL_DB_NAME = 'food_image_collection'
-MYSQL_USER = 'root'
-MYSQL_PASS = ''
+MYSQL_USER = 'food_image_collection'
+MYSQL_PASS = 'p@ssw0rd'
 
+# 'food_image_collection'@'localhost' IDENTIFIED BY 'p@ssw0rd';
 # telegram bot private token
 TELEGRAM_TOKEN = '2119928735:AAF1tIblJDwrMamrodkTSJGa-sAPw2Udo5w'
 
@@ -89,15 +90,22 @@ def is_user_filled_form(tid) :
 
     with db_conn :
         with db_conn.cursor () as cursor :
-            sql_select = "SELECT age, region, consent, city, gender, one_week_consent FROM t_users WHERE telegram_id = %s"
+            sql_select = "SELECT consent, age, gender, occupation, region, ethnicy, "\
+            + " height, weight, city, is_smoking, language_id, schedule, iweight, waist, "\
+            + " breakfast, lunch, dinner, activity, sleep, sport, dietbefore, dietchanged "\
+            + "FROM t_users WHERE telegram_id = %s"
             cursor.execute ( sql_select, (int ( tid )) )
             result = cursor.fetchone ()
         db_conn.commit ()
 
     if result is None :
         return False
+    
+    are_fields_filled = True
+    for value in result:
+        are_fields_filled = are_fields_filled and (value is not None)
 
-    if result [ 'age' ] and result [ 'region' ]  and result [ 'city' ] and result [ 'gender' ] and result [ 'one_week_consent' ]:
+    if are_fields_filled:
         return True
 
     return False
@@ -124,8 +132,6 @@ def save_user_region(message) :
         region_id = 6
 
     markup = ReplyKeyboardRemove ( selective=False )
-    BOT.send_message ( chat_id, TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'thanks' ),
-                       reply_markup=markup )
 
     db_conn = get_connection ()
     with db_conn :
@@ -142,10 +148,6 @@ def save_user_city(message) :
     user_id = message.from_user.id
     city = message.text
 
-    markup = ReplyKeyboardRemove ( selective=False )
-    BOT.send_message ( chat_id, TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'thanks' ),
-                       reply_markup=markup )
-
     db_conn = get_connection ()
     with db_conn :
         with db_conn.cursor () as cursor :
@@ -153,7 +155,7 @@ def save_user_city(message) :
             cursor.execute ( sql_insert, (city, user_id) )
         db_conn.commit ()
 
-    require_gender_action ( message )
+    require_height_action( message )
 
 
 def save_user_gender(message) :
@@ -169,8 +171,6 @@ def save_user_gender(message) :
         gender_id = 3
 
     markup = ReplyKeyboardRemove ( selective=False )
-    BOT.send_message ( chat_id, TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'thanks' ),
-                       reply_markup=markup )
 
     db_conn = get_connection ()
     with db_conn :
@@ -187,14 +187,30 @@ def save_user_occ(message) :
     user_id = message.from_user.id
     occ_id = message.text
 
-    if occ_id == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_health' ) :
+    if occ_id == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_student' ) :
         occ_id = 1
-    else :
+    elif occ_id == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_managers' ) :
+        occ_id = 2
+    elif occ_id == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_professional' ) :
         occ_id = 3
+    elif occ_id == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_tech' ) :
+        occ_id = 4
+    elif occ_id == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_clerical' ) :
+        occ_id = 5
+    elif occ_id == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_service' ) :
+        occ_id = 6
+    elif occ_id == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_skilled' ) :
+        occ_id = 7
+    elif occ_id == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_craft' ) :
+        occ_id = 8
+    elif occ_id == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_operator' ) :
+        occ_id = 9
+    elif occ_id == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_unemployed' ) :
+        occ_id = 10
+    else :
+        occ_id = 11
 
     markup = ReplyKeyboardRemove ( selective=False )
-    BOT.send_message ( chat_id, TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'thanks' ),
-                       reply_markup=markup )
 
     db_conn = get_connection ()
     with db_conn :
@@ -202,14 +218,41 @@ def save_user_occ(message) :
             sql_insert = "UPDATE t_users SET occupation = %s WHERE telegram_id = %s"
             cursor.execute ( sql_insert, (occ_id, user_id) )
         db_conn.commit ()
+        
+    require_schedule_action( message )
 
-    require_height_action ( message )
+
+def save_user_schedule(message) :
+    chat_id = message.chat.id
+    user_id = message.from_user.id
+    work_id = message.text
+
+    if work_id == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'work_9_5' ) :
+        work_id = 1
+    elif work_id == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'work_flexible' ) :
+        work_id = 2
+    elif work_id == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'work_hight' ) :
+        work_id = 3
+    else :
+        work_id = 4
+
+    db_conn = get_connection ()
+    with db_conn :
+        with db_conn.cursor () as cursor :
+            sql_insert = "UPDATE t_users SET schedule = %s WHERE telegram_id = %s"
+            cursor.execute ( sql_insert, (work_id, user_id) )
+        db_conn.commit ()
+        
+    require_ethnicy_action( message )
 
 
 def save_user_height(message) :
     chat_id = message.chat.id
     user_id = message.from_user.id
     height = message.text
+    
+    if not height.isnumeric():
+        height = -1
 
     db_conn = get_connection ()
     with db_conn :
@@ -226,6 +269,9 @@ def save_user_weight(message) :
     user_id = message.from_user.id
     weight = message.text
 
+    if not weight.isnumeric():
+        weight = -1
+
     db_conn = get_connection ()
     with db_conn :
         with db_conn.cursor () as cursor :
@@ -233,13 +279,70 @@ def save_user_weight(message) :
             cursor.execute ( sql_insert, (weight, user_id) )
         db_conn.commit ()
 
-    require_ethnicy_action ( message )
+    require_waist_action( message )
+    
+
+def save_user_iweight(message) :
+    chat_id = message.chat.id
+    user_id = message.from_user.id
+    iweight = message.text
+
+    if not iweight.isnumeric():
+        iweight = -1
+
+    db_conn = get_connection ()
+    with db_conn :
+        with db_conn.cursor () as cursor :
+            sql_insert = "UPDATE t_users SET iweight = %s WHERE telegram_id = %s"
+            cursor.execute ( sql_insert, (iweight, user_id) )
+        db_conn.commit ()
+
+    require_breakfast_action( message )
+    
+    
+def save_user_waist(message) :
+    chat_id = message.chat.id
+    user_id = message.from_user.id
+    waist = message.text
+
+    if not waist.isnumeric():
+        waist = -1
+
+    db_conn = get_connection ()
+    with db_conn :
+        with db_conn.cursor () as cursor :
+            sql_insert = "UPDATE t_users SET waist = %s WHERE telegram_id = %s"
+            cursor.execute ( sql_insert, (waist, user_id) )
+        db_conn.commit ()
+        
+    require_smoking_action( message )
 
 
 def save_user_ethnicy(message) :
     chat_id = message.chat.id
     user_id = message.from_user.id
     ethnicy = message.text
+    
+    if ethnicy == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_1' ) :
+        ethnicy = 1
+    elif ethnicy == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_2' ) :
+        ethnicy = 2
+    elif ethnicy == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_3' ) :
+        ethnicy = 3
+    elif ethnicy == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_4' ) :
+        ethnicy = 4
+    elif ethnicy == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_5' ) :
+        ethnicy = 5
+    elif ethnicy == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_6' ) :
+        ethnicy = 6
+    elif ethnicy == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_7' ) :
+        ethnicy = 7
+    elif ethnicy == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_8' ) :
+        ethnicy = 8
+    elif ethnicy == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_9' ) :
+        ethnicy = 9
+    else :
+        ethnicy = 10
 
     db_conn = get_connection ()
     with db_conn :
@@ -247,8 +350,216 @@ def save_user_ethnicy(message) :
             sql_insert = "UPDATE t_users SET ethnicy = %s WHERE telegram_id = %s"
             cursor.execute ( sql_insert, (ethnicy, user_id) )
         db_conn.commit ()
+        
+    if ethnicy != 10:
+        require_region_action( message )
+    else:
+        require_ethnicyother_action( message )
 
-    require_smoking_action ( message )
+
+def save_user_ethnicyother(message):
+    chat_id = message.chat.id
+    user_id = message.from_user.id
+    nationality = message.text
+
+    db_conn = get_connection ()
+    with db_conn :
+        with db_conn.cursor () as cursor :
+            sql_insert = "UPDATE t_users SET ethnicy_other = %s WHERE telegram_id = %s"
+            cursor.execute ( sql_insert, (nationality, user_id) )
+        db_conn.commit ()
+
+    require_region_action ( message )
+
+def save_user_breakfast(message) : 
+    chat_id = message.chat.id
+    user_id = message.from_user.id
+    breakfast = message.text
+
+    if breakfast == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'breakfast_1' ) :
+        breakfast = 1
+    elif breakfast == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'breakfast_2' ) :
+        breakfast = 2
+    elif breakfast == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'breakfast_3' ) :
+        breakfast = 3
+    else :
+        breakfast = 4
+
+    markup = ReplyKeyboardRemove ( selective=False )
+
+    db_conn = get_connection ()
+    with db_conn :
+        with db_conn.cursor () as cursor :
+            sql_insert = "UPDATE t_users SET breakfast = %s WHERE telegram_id = %s"
+            cursor.execute ( sql_insert, (breakfast, user_id) )
+        db_conn.commit ()
+   
+    require_lunch_action( message )
+    
+
+def save_user_lunch(message) : 
+    chat_id = message.chat.id
+    user_id = message.from_user.id
+    lunch = message.text
+
+    if lunch == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'lunch_1' ) :
+        lunch = 1
+    elif lunch == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'lunch_2' ) :
+        lunch = 2
+    elif lunch == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'lunch_3' ) :
+        lunch = 3
+    else :
+        lunch = 4
+
+    markup = ReplyKeyboardRemove ( selective=False )
+
+    db_conn = get_connection ()
+    with db_conn :
+        with db_conn.cursor () as cursor :
+            sql_insert = "UPDATE t_users SET lunch = %s WHERE telegram_id = %s"
+            cursor.execute ( sql_insert, (lunch, user_id) )
+        db_conn.commit ()
+   
+    require_dinner_action( message )
+    
+
+def save_user_dinner(message) : 
+    chat_id = message.chat.id
+    user_id = message.from_user.id
+    dinner = message.text
+
+    if dinner == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'dinner_1' ) :
+        dinner = 1
+    elif dinner == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'dinner_2' ) :
+        dinner = 2
+    elif dinner == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'dinner_3' ) :
+        dinner = 3
+    else :
+        dinner = 4
+
+    markup = ReplyKeyboardRemove ( selective=False )
+
+    db_conn = get_connection ()
+    with db_conn :
+        with db_conn.cursor () as cursor :
+            sql_insert = "UPDATE t_users SET dinner = %s WHERE telegram_id = %s"
+            cursor.execute ( sql_insert, (dinner, user_id) )
+        db_conn.commit ()
+   
+    require_activity_action( message )
+
+
+def save_user_activity(message) : 
+    chat_id = message.chat.id
+    user_id = message.from_user.id
+    activity = message.text
+
+    if activity == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'activity_low' ) :
+        activity = 1
+    elif activity == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'activity_normal' ) :
+        activity = 2
+    else :
+        activity = 3
+
+    markup = ReplyKeyboardRemove ( selective=False )
+
+    db_conn = get_connection ()
+    with db_conn :
+        with db_conn.cursor () as cursor :
+            sql_insert = "UPDATE t_users SET activity = %s WHERE telegram_id = %s"
+            cursor.execute ( sql_insert, (activity, user_id) )
+        db_conn.commit ()
+   
+    require_sleeping_action(message)
+
+
+def save_user_sleeping(message) : 
+    chat_id = message.chat.id
+    user_id = message.from_user.id
+    sleep = message.text
+
+    if sleep == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'sleep_min' ) :
+        sleep = 1
+    elif sleep == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'sleep_normal' ) :
+        sleep = 2
+    elif sleep == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'sleep_long' ) :
+        sleep = 2
+    else :
+        sleep = 3
+
+    markup = ReplyKeyboardRemove ( selective=False )
+
+    db_conn = get_connection ()
+    with db_conn :
+        with db_conn.cursor () as cursor :
+            sql_insert = "UPDATE t_users SET sleep = %s WHERE telegram_id = %s"
+            cursor.execute ( sql_insert, (sleep, user_id) )
+        db_conn.commit ()
+   
+    require_sport_action(message)
+
+
+def save_user_sport(message) : 
+    chat_id = message.chat.id
+    user_id = message.from_user.id
+    sport = message.text
+
+    if sport == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'workout_high' ) :
+        sport = 1
+    elif sport == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'workout_low' ) :
+        sport = 2
+    else :
+        sport = 3
+
+    markup = ReplyKeyboardRemove ( selective=False )
+
+    db_conn = get_connection ()
+    with db_conn :
+        with db_conn.cursor () as cursor :
+            sql_insert = "UPDATE t_users SET sport = %s WHERE telegram_id = %s"
+            cursor.execute ( sql_insert, (sport, user_id) )
+        db_conn.commit ()
+   
+    require_dietbefore_action(message)
+    
+    
+def save_user_dietbefore(message) : 
+    chat_id = message.chat.id
+    user_id = message.from_user.id
+    dietbefore = message.text
+
+    if dietbefore == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'yes' ) :
+        dietbefore = 1
+    elif dietbefore == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'no' ) :
+        dietbefore = 2
+    else :
+        dietbefore = 3
+
+    markup = ReplyKeyboardRemove ( selective=False )
+
+    db_conn = get_connection ()
+    with db_conn :
+        with db_conn.cursor () as cursor :
+            sql_insert = "UPDATE t_users SET dietbefore = %s WHERE telegram_id = %s"
+            cursor.execute ( sql_insert, (dietbefore, user_id) )
+        db_conn.commit ()
+   
+    require_dietchanged_action(message)
+    
+
+def save_user_dietchanged(message) : 
+    chat_id = message.chat.id
+    user_id = message.from_user.id
+    dietchanged = message.text
+
+    db_conn = get_connection ()
+    with db_conn :
+        with db_conn.cursor () as cursor :
+            sql_insert = "UPDATE t_users SET dietchanged = %s WHERE telegram_id = %s"
+            cursor.execute ( sql_insert, (dietchanged, user_id) )
+        db_conn.commit ()
+
+    require_imageinfo_action( message )
 
 
 def save_user_smoking(message) :
@@ -271,8 +582,8 @@ def save_user_smoking(message) :
             sql_insert = "UPDATE t_users SET is_smoking = %s WHERE telegram_id = %s"
             cursor.execute ( sql_insert, (smoking, user_id) )
         db_conn.commit ()
-
-    require_consentweek_action(message)
+   
+    require_iweight_action( message )
 
 
 def save_user_language(message) :
@@ -295,11 +606,8 @@ def save_user_language(message) :
             sql_insert = "UPDATE t_users SET language_id = %s WHERE telegram_id = %s"
             cursor.execute ( sql_insert, (language_id, user_id) )
         db_conn.commit ()
-
-    if is_user_filled_form ( message.from_user.id ) :
-        require_save_action ( message )
-    else :
-        require_consent_action ( message )
+    
+    require_consent_action ( message )
 
 
 def save_user_age(message) :
@@ -311,8 +619,6 @@ def save_user_age(message) :
         age = -1
 
     markup = ReplyKeyboardRemove ( selective=False )
-    BOT.send_message ( chat_id, TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'thanks' ),
-                       reply_markup=markup )
 
     db_conn = get_connection ()
     with db_conn :
@@ -320,8 +626,8 @@ def save_user_age(message) :
             sql_insert = "UPDATE t_users SET age = %s WHERE telegram_id = %s"
             cursor.execute ( sql_insert, (age, user_id) )
         db_conn.commit ()
-
-    require_region_action ( message )
+    
+    require_occ_action( message )
 
 
 def save_user_consent(message) :
@@ -333,8 +639,6 @@ def save_user_consent(message) :
     consent = message.text
 
     markup = ReplyKeyboardRemove ( selective=False )
-    BOT.send_message ( chat_id, TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'thanks' ),
-                       reply_markup=markup )
 
     if consent == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'yes' ) :
         consent = 1
@@ -361,10 +665,6 @@ def save_user_consentweek(message) :
     chat_id = message.chat.id
     user_id = message.from_user.id
     consent = message.text
-
-    markup = ReplyKeyboardRemove ( selective=False )
-    BOT.send_message ( chat_id, TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'thanks' ),
-                       reply_markup=markup )
 
     if consent == TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'yes' ) :
         consent = 1
@@ -415,9 +715,9 @@ def save_user_image(message) :
         require_save_action ( message )
     except Exception as e :  # work on python 3.x
         # BOT.send_message ( chat_id, TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'load_again' ) )
-        BOT.send_message ( chat_id, str ( e ) )
+        # BOT.send_message ( chat_id, str ( e ) )
 
-        require_save_action ( message )
+        require_language_action ( message )
 
 
 def require_language_action(message) :
@@ -435,19 +735,15 @@ def require_language_action(message) :
     BOT.register_next_step_handler ( msg, lambda msg : save_user_language ( msg ) )
 
 
-def require_consentweek_action(message) :
-    markup = ReplyKeyboardMarkup ( one_time_keyboard=True )
-    markup_items = [
-        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'yes' ),
-                               callback_data='1' ),
-        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'no' ),
-                               callback_data='2' )
-    ]
-    markup.row ( markup_items [ 0 ], markup_items [ 1 ] )
-
-    markup_title = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'consent_week' )
-    msg = BOT.send_message ( message.chat.id, markup_title, reply_markup=markup )
-    BOT.register_next_step_handler ( msg, lambda msg : save_user_consentweek ( msg ) )
+def require_imageinfo_action(message) :
+    markup_title = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'comment_to_image' )
+    BOT.send_message ( message.chat.id, markup_title )
+    
+    # send examplar image
+    img_ex = open('example.jpeg', 'rb')
+    BOT.send_photo(message.chat.id, img_ex)
+    
+    require_save_action(message)
 
 
 def require_consent_action(message) :
@@ -456,10 +752,9 @@ def require_consent_action(message) :
     user_language = get_user_language_code ( user_id )
 
     hello_text = TEXT.get_text ( user_language, 'hello' )
-    greeting_info = TEXT.get_text ( user_language, 'greeting' )
     brief_info = TEXT.get_text ( user_language, 'brief_info' )
 
-    text = f"{hello_text} {user_name}! {greeting_info}\n{brief_info} "
+    text = f"{hello_text} {user_name}! \n{brief_info} "
     BOT.reply_to ( message, text )
 
     markup = ReplyKeyboardMarkup ( one_time_keyboard=True )
@@ -501,13 +796,13 @@ def require_region_action(message) :
     markup.row ( markup_items [ 0 ], markup_items [ 1 ] )
     markup.row ( markup_items [ 2 ], markup_items [ 3 ], markup_items [ 4 ] )
 
-    markup_title = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'region' )
+    markup_title = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'region_kz' )
     msg = BOT.send_message ( message.chat.id, markup_title, reply_markup=markup )
     BOT.register_next_step_handler ( msg, lambda msg : save_user_region ( msg ) )
 
 
 def require_city_action(message) :
-    markup_title = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'city' )
+    markup_title = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'region_outside' )
     msg = BOT.send_message ( message.chat.id, markup_title )
     BOT.register_next_step_handler ( msg, lambda msg : save_user_city ( msg ) )
 
@@ -533,32 +828,62 @@ def require_occ_action(message) :
     text = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occupation' )
 
     markup = ReplyKeyboardMarkup ( one_time_keyboard=True )
+    
     markup_items = [
-        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_science' ),
-                               callback_data='1' ),
-        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_health' ),
-                               callback_data='2' ),
-        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_teaching' ),
-                               callback_data='3' ),
-        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_business' ),
-                               callback_data='4' ),
-        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_it' ),
-                               callback_data='5' ),
-        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'oc_legal' ),
-                               callback_data='6' ),
         InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_other' ),
-                               callback_data='7' )
+                               callback_data='1' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_student' ),
+                               callback_data='2' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_managers' ),
+                               callback_data='3' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_professional' ),
+                               callback_data='4' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_tech' ),
+                               callback_data='5' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_clerical' ),
+                               callback_data='6' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_service' ),
+                               callback_data='7' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_skilled' ),
+                               callback_data='8' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_craft' ),
+                               callback_data='9' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_operator' ),
+                               callback_data='10' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'occ_unemployed' ),
+                               callback_data='11' )
     ]
-    markup.row ( markup_items [ 0 ],
-                 markup_items [ 1 ],
-                 markup_items [ 2 ] )
-
-    markup.row ( markup_items [ 3 ],
-                 markup_items [ 4 ],
-                 markup_items [ 5 ],
-                 markup_items [ 6 ] )
+    
+    for i in range(0, len(markup_items)):
+        markup.row( markup_items[i] )
+    
     msg = BOT.send_message ( message.chat.id, text, reply_markup=markup )
     BOT.register_next_step_handler ( msg, lambda msg : save_user_occ ( msg ) )
+    
+    
+def require_schedule_action(message) : 
+    text = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'schedule' )
+
+    markup = ReplyKeyboardMarkup ( one_time_keyboard=True )
+
+    markup_items = [
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'work_9_5' ),
+                               callback_data='1' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'work_flexible' ),
+                               callback_data='2' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'work_hight' ),
+                               callback_data='3' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'work_no' ),
+                               callback_data='4' )
+    ]
+    markup.row ( markup_items [ 0 ],
+                 markup_items [ 1 ] )
+
+    markup.row ( markup_items [ 2 ],
+                 markup_items [ 3 ] )
+    
+    msg = BOT.send_message ( message.chat.id, text, reply_markup=markup )
+    BOT.register_next_step_handler ( msg, lambda msg : save_user_schedule ( msg ) )
 
 
 def require_height_action(message) :
@@ -573,10 +898,57 @@ def require_weight_action(message) :
     BOT.register_next_step_handler ( msg, lambda msg : save_user_weight ( msg ) )
 
 
+def require_iweight_action(message) :
+    text = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ideal_weight' )
+    msg = BOT.send_message ( message.chat.id, text )
+    BOT.register_next_step_handler ( msg, lambda msg : save_user_iweight ( msg ) )
+
+
+def require_waist_action(message) :
+    text = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'waist_circumference' )
+    msg = BOT.send_message ( message.chat.id, text )
+    BOT.register_next_step_handler ( msg, lambda msg : save_user_waist ( msg ) )
+
+
 def require_ethnicy_action(message) :
     text = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy' )
-    msg = BOT.send_message ( message.chat.id, text )
+
+    markup = ReplyKeyboardMarkup ( one_time_keyboard=True )
+    markup_items = [
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_1' ),
+                               callback_data='1' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_2' ),
+                               callback_data='2' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_3' ),
+                               callback_data='3' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_4' ),
+                               callback_data='4' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_5' ),
+                               callback_data='5' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_6' ),
+                               callback_data='6' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_7' ),
+                               callback_data='7' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_8' ),
+                               callback_data='8' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_9' ),
+                               callback_data='9' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_10' ),
+                               callback_data='10' ),
+    ]
+    markup.row ( markup_items [ 0 ], markup_items [ 1 ], markup_items [ 2 ] )
+    markup.row ( markup_items [ 3 ], markup_items [ 4 ], markup_items [ 5 ] )
+    markup.row ( markup_items [ 6 ], markup_items [ 7 ], markup_items [ 8 ] )
+    markup.row ( markup_items [ 9 ] )
+
+    msg = BOT.send_message ( message.chat.id, text, reply_markup=markup )
     BOT.register_next_step_handler ( msg, lambda msg : save_user_ethnicy ( msg ) )
+
+
+def require_ethnicyother_action(message) :
+    text = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'ethnicy_other' )
+    msg = BOT.send_message ( message.chat.id, text )
+    BOT.register_next_step_handler ( msg, lambda msg : save_user_ethnicyother ( msg ) )
 
 
 def require_smoking_action(message) :
@@ -597,6 +969,153 @@ def require_smoking_action(message) :
     BOT.register_next_step_handler ( msg, lambda msg : save_user_smoking ( msg ) )
 
 
+def require_breakfast_action(message) :
+    text = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'breakfast' )
+
+    markup = ReplyKeyboardMarkup ( one_time_keyboard=True )
+    markup_items = [
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'breakfast_1' ),
+                               callback_data='1' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'breakfast_2' ),
+                               callback_data='2' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'breakfast_3' ),
+                               callback_data='3' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'breakfast_4' ),
+                               callback_data='4' )
+    ]
+    markup.row ( markup_items [ 0 ], markup_items [ 1 ] )
+    markup.row ( markup_items [ 2 ], markup_items [ 3 ] )
+
+    msg = BOT.send_message ( message.chat.id, text, reply_markup=markup )
+    BOT.register_next_step_handler ( msg, lambda msg : save_user_breakfast ( msg ) )
+    
+    
+def require_lunch_action(message) :
+    text = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'lunch' )
+
+    markup = ReplyKeyboardMarkup ( one_time_keyboard=True )
+    markup_items = [
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'lunch_1' ),
+                               callback_data='1' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'lunch_2' ),
+                               callback_data='2' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'lunch_3' ),
+                               callback_data='3' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'lunch_4' ),
+                               callback_data='4' )
+    ]
+    markup.row ( markup_items [ 0 ], markup_items [ 1 ] )
+    markup.row ( markup_items [ 2 ], markup_items [ 3 ] )
+
+    msg = BOT.send_message ( message.chat.id, text, reply_markup=markup )
+    BOT.register_next_step_handler ( msg, lambda msg : save_user_lunch ( msg ) )
+
+
+def require_dinner_action(message) :
+    text = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'dinner' )
+
+    markup = ReplyKeyboardMarkup ( one_time_keyboard=True )
+    markup_items = [
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'dinner_1' ),
+                               callback_data='1' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'dinner_2' ),
+                               callback_data='2' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'dinner_3' ),
+                               callback_data='3' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'dinner_4' ),
+                               callback_data='4' )
+    ]
+    markup.row ( markup_items [ 0 ], markup_items [ 1 ] )
+    markup.row ( markup_items [ 2 ], markup_items [ 3 ] )
+
+    msg = BOT.send_message ( message.chat.id, text, reply_markup=markup )
+    BOT.register_next_step_handler ( msg, lambda msg : save_user_dinner ( msg ) )
+
+
+def require_activity_action(message) :
+    text = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'activity' )
+
+    markup = ReplyKeyboardMarkup ( one_time_keyboard=True )
+    markup_items = [
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'activity_low' ),
+                               callback_data='1' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'activity_normal' ),
+                               callback_data='2' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'activity_mixed' ),
+                               callback_data='3' )
+    ]
+    markup.row ( markup_items [ 0 ], markup_items [ 1 ] )
+    markup.row ( markup_items [ 2 ] )
+
+    msg = BOT.send_message ( message.chat.id, text, reply_markup=markup )
+    BOT.register_next_step_handler ( msg, lambda msg : save_user_activity ( msg ) )
+    
+
+def require_sleeping_action(message) :
+    text = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'sleep' )
+
+    markup = ReplyKeyboardMarkup ( one_time_keyboard=True )
+    markup_items = [
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'sleep_min' ),
+                               callback_data='1' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'sleep_normal' ),
+                               callback_data='2' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'sleep_long' ),
+                               callback_data='3' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'sleep_2long' ),
+                               callback_data='4' )
+    ]
+    markup.row ( markup_items [ 0 ], markup_items [ 1 ] )
+    markup.row ( markup_items [ 2 ], markup_items [ 3 ] )
+
+    msg = BOT.send_message ( message.chat.id, text, reply_markup=markup )
+    BOT.register_next_step_handler ( msg, lambda msg : save_user_sleeping ( msg ) )
+
+
+def require_sport_action(message) :
+    text = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'workout' )
+
+    markup = ReplyKeyboardMarkup ( one_time_keyboard=True )
+    markup_items = [
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'workout_high' ),
+                               callback_data='1' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'workout_low' ),
+                               callback_data='2' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'workout_very_low' ),
+                               callback_data='3' )
+    ]
+    markup.row ( markup_items [ 0 ], markup_items [ 1 ] )
+    markup.row ( markup_items [ 2 ] )
+
+    msg = BOT.send_message ( message.chat.id, text, reply_markup=markup )
+    BOT.register_next_step_handler ( msg, lambda msg : save_user_sport ( msg ) )
+    
+
+def require_dietbefore_action(message) :
+    text = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'diet' )
+
+    markup = ReplyKeyboardMarkup ( one_time_keyboard=True )
+    markup_items = [
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'yes' ),
+                               callback_data='1' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'no' ),
+                               callback_data='2' ),
+        InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'a_bit' ),
+                               callback_data='3' )
+    ]
+    markup.row ( markup_items [ 0 ], markup_items [ 1 ] )
+    markup.row ( markup_items [ 2 ] )
+
+    msg = BOT.send_message ( message.chat.id, text, reply_markup=markup )
+    BOT.register_next_step_handler ( msg, lambda msg : save_user_dietbefore ( msg ) )
+    
+
+def require_dietchanged_action(message) :
+    text = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'diet_change' )
+    msg = BOT.send_message ( message.chat.id, text )
+    BOT.register_next_step_handler ( msg, lambda msg : save_user_dietchanged ( msg ) )
+
+
 def require_save_action(message) :
     msg = BOT.send_message ( message.chat.id, TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'load_image_please' ) )
     BOT.register_next_step_handler ( msg, lambda msg : save_user_image ( msg ) )
@@ -613,8 +1132,14 @@ def handle_command(message) :
 
         if user_id and not is_user_exists ( user_id ) :
             create_user ( user_id, 1 )
-
+        
         require_language_action ( message )
+        
+        #  TO BE UNCOMMENTED
+        # if is_user_filled_form( user_id ):
+        #     require_save_action( message )
+        # else:  
+        #     require_language_action ( message )
 
 
 BOT.polling ()
