@@ -545,7 +545,7 @@ def save_user_dietbefore(message) :
             cursor.execute ( sql_insert, (dietbefore, user_id) )
         db_conn.commit ()
     
-    if dietbefore == 2:
+    if dietbefore != 2:
         require_dietchanged_action( message )
     else:
         require_imageinfo_action( message )
