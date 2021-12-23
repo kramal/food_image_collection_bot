@@ -353,7 +353,7 @@ def save_user_ethnicy(message) :
         db_conn.commit ()
         
     if ethnicy != 10:
-        require_region_action( message )
+        require_ethnicy_action( message )
     else:
         require_ethnicyother_action( message )
 
