@@ -778,6 +778,7 @@ def require_age_action(message) :
 
 
 def require_region_action(message) :
+    markup_title = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'region_kz' )
     markup = ReplyKeyboardMarkup ( one_time_keyboard=True )
     markup_items = [
         InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'region_center' ),
@@ -793,18 +794,19 @@ def require_region_action(message) :
         InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'region_other' ),
                                callback_data='6' )
     ]
-    markup.row ( markup_items [ 0 ], markup_items [ 1 ] )
-    markup.row ( markup_items [ 2 ], markup_items [ 3 ], markup_items [ 4 ] )
+    markup.row ( markup_items [ 0 ], markup_items [ 1 ], markup_items [ 2 ] )
+    markup.row ( markup_items [ 3 ], markup_items [ 4 ], markup_items [ 5 ] )
 
-    markup_title = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'region_kz' )
+    
     msg = BOT.send_message ( message.chat.id, markup_title, reply_markup=markup )
     BOT.register_next_step_handler ( msg, lambda msg : save_user_region ( msg ) )
 
-
+    
 def require_city_action(message) :
     markup_title = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'region_outside' )
     msg = BOT.send_message ( message.chat.id, markup_title )
     BOT.register_next_step_handler ( msg, lambda msg : save_user_city ( msg ) )
+
 
 
 def require_gender_action(message) :
@@ -1044,7 +1046,8 @@ def require_activity_action(message) :
         InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'activity_mixed' ),
                                callback_data='3' )
     ]
-    markup.row ( markup_items [ 0 ], markup_items [ 1 ] )
+    markup.row ( markup_items [ 0 ] )
+    markup.row ( markup_items [ 1 ] )
     markup.row ( markup_items [ 2 ] )
 
     msg = BOT.send_message ( message.chat.id, text, reply_markup=markup )
