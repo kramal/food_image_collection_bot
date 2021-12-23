@@ -131,16 +131,17 @@ def save_user_region(message) :
     else :
         region_id = 6
 
-    markup = ReplyKeyboardRemove ( selective=False )
-
     db_conn = get_connection ()
     with db_conn :
         with db_conn.cursor () as cursor :
             sql_insert = "UPDATE t_users SET region = %s WHERE telegram_id = %s"
             cursor.execute ( sql_insert, (region_id, user_id) )
         db_conn.commit ()
-
-    require_city_action ( message )
+    
+    if region_id != 6:
+        require_region_action( message )
+    else:
+        require_region_other_action( message )
 
 
 def save_user_city(message) :
@@ -543,8 +544,12 @@ def save_user_dietbefore(message) :
             sql_insert = "UPDATE t_users SET dietbefore = %s WHERE telegram_id = %s"
             cursor.execute ( sql_insert, (dietbefore, user_id) )
         db_conn.commit ()
-   
-    require_dietchanged_action(message)
+    
+    if dietbefore == 1:
+        require_dietchanged_action( message )
+    else:
+        save_user_dietchanged( message )
+    
     
 
 def save_user_dietchanged(message) : 
@@ -802,7 +807,7 @@ def require_region_action(message) :
     BOT.register_next_step_handler ( msg, lambda msg : save_user_region ( msg ) )
 
     
-def require_city_action(message) :
+def require_region_other_action(message) :
     markup_title = TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'region_outside' )
     msg = BOT.send_message ( message.chat.id, markup_title )
     BOT.register_next_step_handler ( msg, lambda msg : save_user_city ( msg ) )
