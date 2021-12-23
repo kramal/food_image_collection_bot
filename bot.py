@@ -1087,7 +1087,8 @@ def require_sport_action(message) :
         InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'workout_very_low' ),
                                callback_data='3' )
     ]
-    markup.row ( markup_items [ 0 ], markup_items [ 1 ] )
+    markup.row ( markup_items [ 0 ] )
+    markup.row ( markup_items [ 1 ] )
     markup.row ( markup_items [ 2 ] )
 
     msg = BOT.send_message ( message.chat.id, text, reply_markup=markup )
@@ -1106,7 +1107,8 @@ def require_dietbefore_action(message) :
         InlineKeyboardButton ( TEXT.get_text ( get_user_language_code ( message.from_user.id ), 'a_bit' ),
                                callback_data='3' )
     ]
-    markup.row ( markup_items [ 0 ], markup_items [ 1 ] )
+    markup.row ( markup_items [ 0 ] )
+    markup.row ( markup_items [ 1 ] )
     markup.row ( markup_items [ 2 ] )
 
     msg = BOT.send_message ( message.chat.id, text, reply_markup=markup )
