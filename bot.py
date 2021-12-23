@@ -747,7 +747,8 @@ def require_imageinfo_action(message) :
     img_ex = open('example.jpeg', 'rb')
     BOT.send_photo(message.chat.id, img_ex)
     
-    require_save_action(message)
+    BOT.register_next_step_handler ( msg, lambda msg : require_save_action ( msg ) )
+    
 
 
 def require_consent_action(message) :
