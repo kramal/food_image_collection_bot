@@ -545,10 +545,10 @@ def save_user_dietbefore(message) :
             cursor.execute ( sql_insert, (dietbefore, user_id) )
         db_conn.commit ()
     
-    if dietbefore == 1:
+    if dietbefore == 2:
         require_dietchanged_action( message )
     else:
-        save_user_dietchanged( message )
+        require_dietbefore_action( message )
     
     
 
