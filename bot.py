@@ -139,7 +139,7 @@ def save_user_region(message) :
         db_conn.commit ()
     
     if region_id != 6:
-        require_region_action( message )
+        require_height_action( message )
     else:
         require_region_other_action( message )
 
