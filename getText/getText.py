@@ -5,18 +5,18 @@ def get_text(lang=1, code='', appendix=''):
             "hello": "Hello! ",
             "welcome": "Welcome to the Food Image collection Bot.",
             "thanks": "Thank you!",
-            "brief_info": 'Informed Consent Form:\n\nYou are invited to participate in a research study entitled:\n“AI Applications for Personalised Nutrition Interventions”\n' 
-                + 'Description: This study aims to collect images of different types of food. This data will be used to build an object detection system, which will recognize food in the image and classify it.\n' 
+            "brief_info": 'Here is the informed Consent Form:\n\nYou are invited to participate in a research study entitled:\n\n“AI Applications for Personalised Nutrition Interventions”\n\n' 
+                + 'Description: This study aims to collect images of different types of food. This data will be used to build an object detection system, which will recognize food in the image and classify it.\n\n' 
                 + 'The data will be collected via Telegram, one of the commonly used cross-platform instant messaging systems. Participants are asked to complete a short 1-minute survey and send photos of their food for five days: ' 
-                + '2 weekend days and 3 weekdays. The participants will be reminded to send pictures without any human faces or objects which can be linked back to the respondents.\n ' 
-                + 'Risks: No potential risks are associated with the study.\nBenefits: It is unlikely that there will be direct benefits to you from participating in this study; ' 
+                + '2 weekend days and 3 weekdays. The participants will be reminded to send pictures without any human faces or objects which can be linked back to the respondents.\n\n' 
+                + 'Risks: No potential risks are associated with the study.\n\nBenefits: It is unlikely that there will be direct benefits to you from participating in this study; ' 
                 + 'however, the study findings may have potentially positive implications to promote effective nutrition apps/platforms for the contribution to a healthy lifestyle among ' 
-                + 'the Kazakhstani population.\nCompensation: No tangible compensation will be given. A copy of the research results will be available after the study as published papers.\n ' 
+                + 'the Kazakhstani population.\n\nCompensation: No tangible compensation will be given. A copy of the research results will be available after the study as published papers.\n\n' 
                 + 'Confidentiality & Privacy: No personal information which may reveal the identity of the person will be collected. All collected data will be anonymized and stored on the computational ' 
-                + ' servers of the Institute of Smart Systems and Artificial Intelligence (ISSAI) and administered only by the investigators of the project. Address: Kabanbay batyr ave 53, Block C4, Office 425.\n ' 
-                + 'Voluntary Nature of the Study. Participation in this study is strictly voluntary, and if the agreement to participate is given, it can be withdrawn at any time without prejudice.\n ' 
-                + 'Points of Contact:\nPrincipal Investigator: Dr. Mei-Yen Chan,  yen.chan@nu.edu.kz\nCo-Principal Investigator: Dr. Huseyin Atakan Varol  ahvarol@nu.edu.kz \n ' 
-                + 'This study has been reviewed and cleared by the Nazarbayev University Research Ethics Committee.  ' 
+                + ' servers of the Institute of Smart Systems and Artificial Intelligence (ISSAI) and administered only by the investigators of the project. Address: Kabanbay batyr ave 53, Block C4, Office 425.\n\n' 
+                + 'Voluntary Nature of the Study. Participation in this study is strictly voluntary, and if the agreement to participate is given, it can be withdrawn at any time without prejudice.\n\n' 
+                + 'Points of Contact:\n\nPrincipal Investigator: Dr. Mei-Yen Chan,  yen.chan@nu.edu.kz\n\nCo-Principal Investigator: Dr. Huseyin Atakan Varol  ahvarol@nu.edu.kz\n\n' 
+                + 'This study has been reviewed and cleared by the Nazarbayev University Research Ethics Committee.' 
                 + 'If you have concerns or questions about your rights as a participant or about the way the study is conducted, you may contact Nazarbayev University Research Ethics Committee. E-mail: resethics@nu.edu.kz',
             "consent": "Do you agree to participate in this experiment?",
             "thanks_return": "Thank you, we hope that you can return later.",
@@ -111,20 +111,20 @@ def get_text(lang=1, code='', appendix=''):
             "hello": "Здравствуйте! ",
             "welcome": "Добро пожаловать в Бот для сбора изображений еды.",
             "thanks": "Спасибо!",
-            "brief_info": 'Вы приглашены принять участие в исследовании под названием:\n“ИИ для персонализированных мероприятий в области питания”\nОписание: ' 
+            "brief_info": 'Форма иныормированного согласия:\n\nВы приглашены принять участие в исследовании под названием:\n\n“ИИ для персонализированных мероприятий в области питания”\n\nОписание: ' 
                 + 'Целью данного исследования является сбор изображений различных видов пищи. Эти данные будут использованы для построения модели обнаружения объектов, ' 
-                + 'которая будет распознавать пищу на изображении и классифицировать ее.\nДанные будут собираться с помощью Telegram, ' 
+                + 'которая будет распознавать пищу на изображении и классифицировать ее.\n\nДанные будут собираться с помощью Telegram, ' 
                 + 'одной из широко используемых кроссплатформенных систем обмена мгновенными сообщениями. Участникам предлагается заполнить короткий 2-минутный опрос ' 
                 + 'и отправлять фотографии употребляемой еды в течение пяти дней: 2 выходных дня и 3 рабочих дня. Участники будут получать напоминание в процессе эксперимента. ' 
-                + 'Фотографии должны быть без человеческих лиц или предметов, которые могут быть связаны с идентификацей респондента.\n ' 
-                + 'Риски: Потенциальные риски, связанные с исследованием, отсутствуют.\nВыгоды: Маловероятно, что вы получите прямую выгоду от участия в данном исследовании; ' 
+                + 'Фотографии должны быть без человеческих лиц или предметов, которые могут быть связаны с идентификацей респондента.\n\n' 
+                + 'Риски: Потенциальные риски, связанные с исследованием, отсутствуют.\n\nВыгоды: Маловероятно, что вы получите прямую выгоду от участия в данном исследовании; ' 
                 + 'однако результаты исследования могут способствовать развитию и  продвижению приложений/платформ по питанию для содействия здоровому образу жизни среди населения Казахстана. ' 
-                + '\nКомпенсация: Материальная компенсация за участие отсутствует. Копия результатов исследования будет доступна по завершении в виде опубликованной статьи и базы данных в открытом доступе.\n' 
+                + '\nКомпенсация: Материальная компенсация за участие отсутствует. Копия результатов исследования будет доступна по завершении в виде опубликованной статьи и базы данных в открытом доступе.\n\n' 
                 + 'Конфиденциальность: Никакая личная информация, которая может раскрыть личность человека, собираться не будет. ' 
                 + 'Все собранные данные будут анонимизированы и сохранены на вычислительных серверах Института интеллектуальных систем и искусственного интеллекта (ISSAI) и ' 
-                + ' будут управляться только исследователями проекта. Адрес: пр. Кабанбай батыра 53, Блок С4, Офис 425.\nДобровольный характер исследования. ' 
-                + ' Участие в этом исследовании является строго добровольным, и если будет дано согласие на участие, оно может быть приостановлено в любое время.\n ' 
-                + 'Контактные пункты:\nГлавный исследователь: Доктор Мэй-Йен Чан, yen.chan@nu.edu.kz\nСо-главный исследователь: Доктор Хусейн Атакан Варол, ahvarol@nu.edu.kz\n ' 
+                + ' будут управляться только исследователями проекта. Адрес: пр. Кабанбай батыра 53, Блок С4, Офис 425.\n\nДобровольный характер исследования. ' 
+                + ' Участие в этом исследовании является строго добровольным, и если будет дано согласие на участие, оно может быть приостановлено в любое время.\n\n' 
+                + 'Контактные пункты:\n\nГлавный исследователь: Доктор Мэй-Йен Чан, yen.chan@nu.edu.kz\n\nСо-главный исследователь: Доктор Хусейн Атакан Варол, ahvarol@nu.edu.kz\n\n ' 
                 + 'Это исследование было рассмотрено и одобрено Комитетом по этике исследований Назарбаев университета. Если у вас есть сомнения или вопросы о ваших правах как участника или о том, ' 
                 + ' как проводится исследование, вы можете обратиться в Комитет по этике исследований Назарбаев университета. Электронная почта: resethics@nu.edu.kz',
             "consent": "Вы согласны участвовать в эксперименте? Нажимая “Я согласен” ниже, вы указываете, что вам по крайней мере 18 лет, вы прочитали и поняли эту форму согласия и согласны участвовать в этом исследовании.",
@@ -219,28 +219,28 @@ def get_text(lang=1, code='', appendix=''):
             "hello": "Сәлеметсіз бе! ",
             "welcome": "Добро пожаловать в Бот для сбора изображений еды.",
             "thanks": "Рахмет!",
-            "brief_info": 'Cізді келесі зерттеуге қатысуға шақырамыз: Жеке тамақтану іс-шараларына арналған жасанды интеллекттін (AI)  қолданысы.\n ' 
+            "brief_info": 'Cізді келесі зерттеуге қатысуға шақырамыз: Жеке тамақтану іс-шараларына арналған жасанды интеллекттін (AI)  қолданысы.\n\n' 
                 + 'Сипаттама: осы зерттеудің мақсаты тағамдардың түрлі суреттерің жинау болып табылады. Бұл деректер жиынтығы объектілерді анықтап жіктейтін жүйесін құрып, ' 
-                + 'суреттегі тағамды анықтау үшін қолданылады.\nДеректер кеңінен қолданылатын платформалық жедел хабар алмасу жүйелерінің бірі Telegram арқылы жиналады. ' 
+                + 'суреттегі тағамды анықтау үшін қолданылады.\n\nДеректер кеңінен қолданылатын платформалық жедел хабар алмасу жүйелерінің бірі Telegram арқылы жиналады. ' 
                 + 'Қатысушыларға қысқа 1 минуттық сауалнаманы толтырып, бес күн ішінде тамақ суреттерін жіберу ұсынылады: 2 демалыс және 3 жұмыс күні. ' 
                 + 'Эксперимент мерзімінде қатысушылар өздерімен байланысты болуы мүмкін адамдарсыз немесе заттарсыз фотосуреттер жіберу керек. ' 
-                + 'Қатысушыларға күнделікті түрде ескерту жіберіледі.\nҚауіптер: Зерттеумен байланысты ешқандай ықтимал қауіп жоқ.\n ' 
+                + 'Қатысушыларға күнделікті түрде ескерту жіберіледі.\n\nҚауіптер: Зерттеумен байланысты ешқандай ықтимал қауіп жоқ.\n\n' 
                 + 'Пайдасы: Осы зерттеуге қатысудан қатысушыларға тікелей пайда жоқ; зерттеу нәтижелері Қазақстан халқы арасында салауатты өмір салтын ' 
-                + 'насихаттау үшін тиімді тамақтану қосымшаларын/платформаларын жылжыту үшін оң әсер етуі мүмкін.\nӨтемақы: Ешқандай материалдық өтемақы берілмейді. ' 
-                + 'Зерттеу нәтижелері зерттеу аяқталғаннан кейін мақалалар және дерек жиынтығы түрінде қол жетімді болады.\nҚұпиялылық: адамның жеке басын куәландыратын ақпарат жиналмайды. ' 
+                + 'насихаттау үшін тиімді тамақтану қосымшаларын/платформаларын жылжыту үшін оң әсер етуі мүмкін.\n\nӨтемақы: Ешқандай материалдық өтемақы берілмейді. ' 
+                + 'Зерттеу нәтижелері зерттеу аяқталғаннан кейін мақалалар және дерек жиынтығы түрінде қол жетімді болады.\n\nҚұпиялылық: адамның жеке басын куәландыратын ақпарат жиналмайды. ' 
                 + ' Барлық жиналған деректер анонимдендіріліп, Ақылды Жүйелер және Жасанды Интеллект Институтының (ISSAI) серверлерінде сақталады және оларды тек жоба зерттеушілері басқарады.' 
-                + ' Мекен-жайы: Қабанбай батыр даңғылы 53, С4 блогы, 425 кеңсе.\nЗерттеудің ерікті сипаты. ' 
-                + 'Бұл зерттеуге қатысу толықтай ерікті болып табылады және егер қатысуға келісім берілсе, экспериментке қатысу кез-келген уақытта залалсыз тоқтатылады.\n' 
-                + 'Байланыс пункттері:\nБас зерттеуші: доктор Мэй-Йен Чан, yen.chan@nu.edu.kz\n ' 
-                + 'Бірлескен бас зерттеуші: доктор Хусейн Атакан Варол, ahvarol@nu.edu.kz\nБұл зерттеуді Назарбаев университетінің зерттеу этикасы жөніндегі комитеті қарап, тексерді. ' 
+                + ' Мекен-жайы: Қабанбай батыр даңғылы 53, С4 блогы, 425 кеңсе.\n\nЗерттеудің ерікті сипаты. ' 
+                + 'Бұл зерттеуге қатысу толықтай ерікті болып табылады және егер қатысуға келісім берілсе, экспериментке қатысу кез-келген уақытта залалсыз тоқтатылады.\n\n' 
+                + 'Байланыс пункттері:\n\nБас зерттеуші: доктор Мэй-Йен Чан, yen.chan@nu.edu.kz\n\n' 
+                + 'Бірлескен бас зерттеуші: доктор Хусейн Атакан Варол, ahvarol@nu.edu.kz\n\nБұл зерттеуді Назарбаев университетінің зерттеу этикасы жөніндегі комитеті қарап, тексерді. ' 
                 + ' Егер сіздің қатысушы ретіндегі құқықтарыңыз туралы немесе зерттеудің қалай жүргізілетіні туралы күмәніңіз немесе сұрақтарыңыз болса, ' 
                 + 'Сіз Назарбаев университетінің зерттеу этикасы жөніндегі комитетіне жүгіне аласыз. Электрондық пошта: resethics@nu.edu.kz',
             "consent": "Экспериментке қатысуға келісесіз бе? Төмендегі Мен келісемін түймесін тандау арқылы, сіз кем дегенде 18 жаста екеніңізді көрсетіп және келісімнің осы түрін оқып, түсініп және осы зерттеуге қатысуға келісіміңізді көрсетесіз.",
-            "thanks_return": "Рахмет,сіз қайтып келесіз деген үміттіеміз.",
+            "thanks_return": "Рахмет, сіз қайтып келесіз деген үміттіеміз.",
             "age": "Жасыңызды еңгізіңіз",
             "gender": "Жынысыңыз",
             "occupation": "Кәсіп түріңізді таңдаңыз",
-            "shift_work": "Сіздің жұмысыңыз сменамен ба? ",
+            "shift_work": "Сіздің жұмысыңыз ауысымдық па? ",
             "schedule": "Жұмыс уақытыңыз қандай?",
             "ethnicy": "Этникалық тобыңызды тандаңыз",
             "ethnicy_other": "Этникалық тобыңызды енгізіңіз",
