@@ -5,7 +5,7 @@ def get_text(lang=1, code='', appendix=''):
             "hello": "Hello! ",
             "welcome": "Welcome to the Food Image collection Bot.",
             "thanks": "Thank you!",
-            "brief_info": 'Informed Consent Form:\nYou are invited to participate in a research study entitled:\n“AI Applications for Personalised Nutrition Interventions”\n' 
+            "brief_info": 'Informed Consent Form:\n\nYou are invited to participate in a research study entitled:\n“AI Applications for Personalised Nutrition Interventions”\n' 
                 + 'Description: This study aims to collect images of different types of food. This data will be used to build an object detection system, which will recognize food in the image and classify it.\n' 
                 + 'The data will be collected via Telegram, one of the commonly used cross-platform instant messaging systems. Participants are asked to complete a short 1-minute survey and send photos of their food for five days: ' 
                 + '2 weekend days and 3 weekdays. The participants will be reminded to send pictures without any human faces or objects which can be linked back to the respondents.\n ' 
