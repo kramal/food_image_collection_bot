@@ -551,7 +551,6 @@ def save_user_dietbefore(message) :
         require_dietbefore_action( message )
     
     
-
 def save_user_dietchanged(message) : 
     chat_id = message.chat.id
     user_id = message.from_user.id
