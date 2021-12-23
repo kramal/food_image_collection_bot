@@ -18,7 +18,7 @@ def get_text(lang=1, code='', appendix=''):
                 + 'Points of Contact:\n\nPrincipal Investigator: Dr. Mei-Yen Chan,  yen.chan@nu.edu.kz\n\nCo-Principal Investigator: Dr. Huseyin Atakan Varol  ahvarol@nu.edu.kz\n\n' 
                 + 'This study has been reviewed and cleared by the Nazarbayev University Research Ethics Committee.' 
                 + 'If you have concerns or questions about your rights as a participant or about the way the study is conducted, you may contact Nazarbayev University Research Ethics Committee. E-mail: resethics@nu.edu.kz',
-            "consent": "Do you agree to participate in this experiment?",
+            "consent": "Do you agree to participate in this experiment?\n\nBy clicking “I agree” below you are indicating that you are at least 18 years old, have read and understood this consent form, and agree to participate in this research study.",
             "thanks_return": "Thank you, we hope that you can return later.",
             "age": "How old are you?",
             "gender": "Your gender?",
