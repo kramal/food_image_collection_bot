@@ -353,7 +353,7 @@ def save_user_ethnicy(message) :
         db_conn.commit ()
         
     if ethnicy != 10:
-        require_ethnicy_action( message )
+        require_region_action( message )
     else:
         require_ethnicyother_action( message )
 
@@ -548,7 +548,7 @@ def save_user_dietbefore(message) :
     if dietbefore == 2:
         require_dietchanged_action( message )
     else:
-        require_dietbefore_action( message )
+        require_imageinfo_action( message )
     
     
 def save_user_dietchanged(message) : 
