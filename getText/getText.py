@@ -1,7 +1,7 @@
 def get_text(lang=1, code='', appendix=''):
     texts_data = {
         "en": {
-            "comment_to_image": "Now, you are ready to start with the experiment. We need you to send images of the food you consume for 3 working days and 2 days off. \n Please, take images from top view as shown on sample below.",
+            "comment_to_image": "Now, you are ready to start with the experiment. We need you to send images of the food you consume for 5 days (at least 3 weekdays/normal working days).\n Please, take images from top view as shown on sample below.",
             "hello": "Hello! ",
             "welcome": "Welcome to the Food Image collection Bot.",
             "thanks": "Thank you!",
@@ -22,7 +22,7 @@ def get_text(lang=1, code='', appendix=''):
             "thanks_return": "Thank you, we hope that you can return later.",
             "age": "How old are you?",
             "gender": "Your gender?",
-            "occupation": "Please, select your occupation",
+            "occupation": "Please, select your occupation\n\n Scroll down the list below to choose from 11 options.",
             "shift_work": "Are your a shift worker?",
             "schedule": "What is your work schedule?",
             "ethnicy": "Please, select your ethnicy",
@@ -131,7 +131,7 @@ def get_text(lang=1, code='', appendix=''):
             "thanks_return": "Благодарим, надеюсь вы еще вернетесь.",
             "age": "Введите ваш возраст",
             "gender": "Ваш пол",
-            "occupation": "Выберите ваш род занятий",
+            "occupation": "Выберите ваш род занятий\n\nПрокрутите список приведенный ниже для выбора вашего варианта из 11 предоставленных.",
             "shift_work": "У вас сменная работа?",
             "schedule": "Каково ваше рабочее расписание по времени?",
             "ethnicy": "Выберите вашу этническую группу",
@@ -215,7 +215,7 @@ def get_text(lang=1, code='', appendix=''):
             "load_image_please": "Пожалуйста, загрузите изображение"
         },
         "kz": {
-            "comment_to_image": "Экспериментке қатысуға дайынсыз. 3 жұмыс күні және 2 демалыс күні жеген тағамдарыңыздың сүреттерін жүктеңіз. \n Өтініш, суретті төменде көрсетілгендей асыңызды үстінен түсіріңіз.  ",
+            "comment_to_image": "Экспериментке қатысуға дайынсыз. 5 күн бойы (кемінде 3 күн жұмыс күндері болуы қажет) жеген тағамдарыңыздың сүреттерін жүктеңіз. \n Өтініш, суретті төменде көрсетілгендей асыңызды үстінен түсіріңіз.  ",
             "hello": "Сәлеметсіз бе! ",
             "welcome": "Добро пожаловать в Бот для сбора изображений еды.",
             "thanks": "Рахмет!",
