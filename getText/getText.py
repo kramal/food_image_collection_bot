@@ -82,7 +82,7 @@ def get_text(lang=1, code='', appendix=''):
             "work_no": "I am retired/umeployed/student",
             "breakfast_1": "Between 4 and 6 am",
             "breakfast_2": "Between 6 and 8 am",
-            "breakfast_3": "Between 10 and noon",
+            "breakfast_3": "Between 8 and 10 am",
             "breakfast_4": "I usually skip breakfast",
             "lunch_1": "Between 10 am and noon",
             "lunch_2": "Between noon and 2 pm",
