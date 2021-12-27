@@ -1,7 +1,7 @@
 def get_text(lang=1, code='', appendix=''):
     texts_data = {
         "en": {
-            "comment_to_image": "Now, you are ready to start with the experiment. We need you to send images of the food you consume for 5 days (at least 3 weekdays/normal working days).\n Please, take images from top view as shown on sample below.\n\nIf you have questions regarding the project please feel free to contact us: aifoodimage@gmail.com\n\nSource of image: https://www.matain.id/article/10014/2020/1220/5-tips-skill-fotografi-untuk-maksimalkan-bisnis-kuliner-dari-food-blogger.html",
+            "comment_to_image": "Now, you are ready to start with the experiment. We need you to send images of the food you consume for 5 days (at least 3 weekdays/normal working days).\n Please, take images from top view as shown on sample below.\n\nIf you have questions regarding the project please feel free to contact us: aifoodimage@gmail.com\n\nSource of image: https://bit.ly/3EyTG9U",
             "hello": "Hello! ",
             "welcome": "Welcome to the Food Image collection Bot.",
             "thanks": "Thank you!",
@@ -106,8 +106,7 @@ def get_text(lang=1, code='', appendix=''):
             "load_image_please": "Please, load image of your meal"
         },
         "ru": {
-            "comment_to_image": "Вы можете начать участие в эксперименте. Вам необходимо отправлять фото употребляемой пищи в течении 5 дней(из которых минимум 3 рабочих будней).\n\nEсли у вас есть какие-либо вопросы, пожалуйста, обращайтесь по эл. почте aifoodimage@gmail.com\n\nИсточник изображения: https://www.matain.id/article/10014/2020/1220/5-tips-skill-fotografi-untuk-maksimalkan-bisnis-kuliner-dari-food-blogger.html" 
-            + "Пожалуйста, фотографируйте пищу сверху, как показано на примере ниже.",
+            "comment_to_image": "Вы можете начать участие в эксперименте. Вам необходимо отправлять фото употребляемой пищи в течении 5 дней(из которых минимум 3 рабочих будней).\n\nКогда будете готовы, загрузите пожалуйста фотографию вашей пищи как показано на примере\n\nEсли у вас есть какие-либо вопросы, пожалуйста, обращайтесь по эл. почте aifoodimage@gmail.com\n\nИсточник изображения: https://bit.ly/3EyTG9U",
             "hello": "Здравствуйте! ",
             "welcome": "Добро пожаловать в Бот для сбора изображений еды.",
             "thanks": "Спасибо!",
@@ -215,7 +214,7 @@ def get_text(lang=1, code='', appendix=''):
             "load_image_please": "Пожалуйста, загрузите изображение"
         },
         "kz": {
-            "comment_to_image": "Экспериментке қатысуға дайынсыз. 5 күн бойы (кемінде 3 күн жұмыс күндері болуы қажет) жеген тағамдарыңыздың сүреттерін жүктеңіз.\n\n Өтініш, суретті төменде көрсетілгендей асыңызды үстінен түсіріңіз. Eгер сізде сұрақтар туындаса, келесі email-ға хабарласыңыз aifoodimage@gmail.com\n\nСуреттін сілттемесі: https://www.matain.id/article/10014/2020/1220/5-tips-skill-fotografi-untuk-maksimalkan-bisnis-kuliner-dari-food-blogger.html ",
+            "comment_to_image": "Экспериментке қатысуға дайынсыз. 5 күн бойы (кемінде 3 күн жұмыс күндері болуы қажет) жеген тағамдарыңыздың сүреттерін жүктеңіз.\n\n Өтініш, суретті төменде көрсетілгендей асыңызды үстінен түсіріңіз. Eгер сізде сұрақтар туындаса, келесі email-ға хабарласыңыз aifoodimage@gmail.com\n\nСуреттін сілттемесі: https://bit.ly/3EyTG9U",
             "hello": "Сәлеметсіз бе! ",
             "welcome": "Добро пожаловать в Бот для сбора изображений еды.",
             "thanks": "Рахмет!",
